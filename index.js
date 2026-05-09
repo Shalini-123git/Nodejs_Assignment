@@ -4,6 +4,7 @@ const app = express();
 dotenv.config();
 import db from './config/db.js';
 import schoolValidation from './validation.js';
+import listSchoolValidation from './listSchoolValidation.js';
 import { validationResult } from 'express-validator';
 
 const port = process.env.PORT || 8000;
@@ -59,16 +60,28 @@ app.post("/addSchool", schoolValidation, async (req, res) => {
 })
 
 app.get("/listSchool", async (req, res) => {
+
+    // check validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ 
+            success: false, 
+            errors: errors.array() 
+        });
+    }
+
+    const { latitude, longitude } = req.query;
+
     try {
         const [rows] = await db.execute(`
-                SELECT *,
-                    SQRT(
-                        POW(latitude - 28.70,2)+
-                        POW(longitude- 77.10,2)
-                        ) AS distance
-                    FROM school
-                    ORDER BY distance ASC;
-            `);
+            SELECT *,
+                SQRT(
+                    POW(latitude - ?,2)+
+                    POW(longitude- ?,2)
+                    ) AS distance
+                FROM school
+                ORDER BY distance ASC;
+            `, [latitude, longitude]);
         
         res.status(200).json({
             success: true,
