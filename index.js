@@ -97,6 +97,17 @@ app.get("/listSchool", async (req, res) => {
     }
 })
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "School Management API is running successfully ",
+    endpoints: {
+      addSchool: "/addSchool",
+      listSchools: "/listSchools"
+    }
+  });
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 })
