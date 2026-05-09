@@ -103,7 +103,7 @@ app.get("/", (req, res) => {
     message: "School Management API is running successfully ",
     endpoints: {
       addSchool: "/addSchool",
-      listSchools: "/listSchools"
+      listSchools: "/listSchool"
     }
   });
 });
