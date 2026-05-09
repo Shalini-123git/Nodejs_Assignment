@@ -42,7 +42,7 @@ Adds a new school with validation.
 }
 ```
 
-### GET `/listSchools`
+### GET `/listSchool`
 Returns all schools sorted by distance from user's location.
 
 **Query Params:**
